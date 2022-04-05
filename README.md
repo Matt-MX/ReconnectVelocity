@@ -82,9 +82,6 @@ To allow users to reconnect, make sure they have the permission `velocity.reconn
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- USAGE EXAMPLES -->
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- LICENSE -->
 ## License
