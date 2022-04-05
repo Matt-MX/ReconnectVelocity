@@ -1,0 +1,14 @@
+# Do we want to send players a message when they are reconnected to a server?
+message-on-reconnect: true
+reconnect-message:
+  - ""
+  - "&6You were reconnected to &e%server%."
+  - ""
+
+# Do we want to send a message when their previous server isn't available?
+not-available: true
+not-available-message:
+  - "&cUnable to reconnect you to %server%."
+
+# What server should we fall back to?
+fallback: lobby
