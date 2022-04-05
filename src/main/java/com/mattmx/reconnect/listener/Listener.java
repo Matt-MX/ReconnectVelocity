@@ -35,7 +35,6 @@ public class Listener {
                         ReconnectVelocity.get().getServer().getScheduler().buildTask(ReconnectVelocity.get(), () -> {
                             config.getStringList("not-available-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player)));
                         }).delay(1, TimeUnit.SECONDS).schedule();
-
                     }
                     return;
                 }
