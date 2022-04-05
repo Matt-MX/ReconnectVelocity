@@ -106,7 +106,6 @@ Project Link: [https://github.com/Matt-MX/AnnouncerVelocity](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Protocolize](https://github.com/Matt-MX/AnnouncerVelocity)
 * [Velocity](https://velocitypowered.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
