@@ -39,10 +39,10 @@
     <img src="rc_banner.png" alt="Logo" width="512">
   </a>
 
-<h3 align="center">Announcer [Velocity]</h3>
+<h3 align="center">Reconnect [Velocity]</h3>
 
   <p align="center">
-    Make network-wide announcements on your Velocity server.
+    Reconnect your players!
     <br />
     <a href="https://github.com/Matt-MX/ReconnectVelocity/releases"><strong>Download »</strong></a>
     <br />
