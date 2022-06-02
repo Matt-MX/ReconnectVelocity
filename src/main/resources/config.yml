@@ -8,6 +8,16 @@ not-available: true
 not-available-message:
   - "&7Unable to reconnect you to your last server."
 
-# What server should we fall back to?
-# DEPRECATED
-fallback: lobby
+###################### STORAGE
+# Default: "yaml"
+# Options:
+#   - "mysql"
+#   - "yaml"
+storage:
+  method: "yaml"
+  # The below is only needed if you are using MySQL
+  data:
+    address: localhost
+    database: minecraft
+    username: root
+    password: ''

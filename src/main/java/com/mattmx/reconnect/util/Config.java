@@ -8,12 +8,9 @@ import java.io.IOException;
 public class Config {
     public static YamlConfiguration DEFAULT;
     public static String DEFAULT_PATH = ReconnectVelocity.get().getDataFolder() + "/config.yml";
-    public static YamlConfiguration DATA;
-    public static String DATA_PATH = ReconnectVelocity.get().getDataFolder() + "/data.yml";
 
     public static void init() {
         DEFAULT = get(DEFAULT_PATH, "config.yml");
-        DATA = get(DATA_PATH);
     }
 
     public static void save(YamlConfiguration config, String dest) {
