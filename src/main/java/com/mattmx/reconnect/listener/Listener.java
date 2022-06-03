@@ -32,7 +32,7 @@ public class Listener {
             server = ReconnectUtil.getServer(prev);
             if (server != null) {
                 try {
-                    server.ping().join();
+                    server.ping();
                 } catch (CancellationException | CompletionException exception) {
                     if (config.getBoolean("not-available")) {
                         ReconnectVelocity.get().getServer().getScheduler().buildTask(ReconnectVelocity.get(), () -> {

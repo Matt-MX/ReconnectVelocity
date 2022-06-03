@@ -5,10 +5,7 @@ import com.mattmx.reconnect.listener.Listener;
 import com.mattmx.reconnect.util.Config;
 import com.mattmx.reconnect.util.ReconnectUtil;
 import com.mattmx.reconnect.util.VelocityPlugin;
-import com.mattmx.reconnect.util.storage.MySqlStorage;
-import com.mattmx.reconnect.util.storage.StorageManager;
-import com.mattmx.reconnect.util.storage.StorageMethod;
-import com.mattmx.reconnect.util.storage.YamlStorage;
+import com.mattmx.reconnect.util.storage.*;
 import com.mattmx.reconnect.util.updater.UpdateChecker;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
@@ -35,6 +32,7 @@ public class ReconnectVelocity extends VelocityPlugin {
     public ReconnectVelocity(ProxyServer server, Logger logger) {
         this.init(server, logger, "reconnect");
         StorageManager.addMethod(new MySqlStorage());
+        StorageManager.addMethod(new SQLiteStorage());
         storage = StorageManager.get(Config.DEFAULT.getString("storage.method"));
         checker = new UpdateChecker();
         if (checker.get("https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest")

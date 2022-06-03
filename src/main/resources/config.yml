@@ -11,8 +11,9 @@ not-available-message:
 ###################### STORAGE
 # Default: "yaml"
 # Options:
-#   - "mysql"
-#   - "yaml"
+#   - "mysql" <- Remote or Local SQL database
+#   - "yaml" <- Local .yml file
+#   - "sqlite" <- Local SQL database
 storage:
   method: "yaml"
   # The below is only needed if you are using MySQL
