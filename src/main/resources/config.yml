@@ -19,6 +19,6 @@ storage:
   # The below is only needed if you are using MySQL
   data:
     address: localhost
-    database: minecraft
+    database: reconnect
     username: root
     password: ''

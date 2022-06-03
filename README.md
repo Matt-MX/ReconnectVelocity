@@ -82,6 +82,38 @@ To allow users to reconnect, make sure they have the permission `velocity.reconn
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- Storage -->
+## Storage
+
+In the `config.yml`, we have added different storage options. If you don't need your 
+own plugins to interact with this one, we recommend you keep the `method` set as the default
+option (`yaml`).
+
+```yml
+storage:
+  method: "yaml"
+  # The below is only needed if you are using MySQL
+  data:
+    address: localhost
+    database: reconnect
+    username: root
+    password: ''
+```
+
+To change the method, alter the `method` key. Current options are:
+
+- `yaml` - Local .yml file
+- `sqlite` - Local SQL database
+- `mysql` - Local or remote SQL database
+
+The `data` section is for if you are using the `mysql` option for `method`.
+
+- `address` - The Address of the SQL database
+- `database` - The name of the database
+- `username` - Username for the SQL database
+- `password` - Password for the SQL database
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- LICENSE -->
 ## License
