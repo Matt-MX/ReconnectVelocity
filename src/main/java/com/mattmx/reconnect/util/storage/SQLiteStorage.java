@@ -53,6 +53,15 @@ public class SQLiteStorage extends StorageMethod {
     }
 
     @Override
+    public void save() {
+        try {
+            statement.closeOnCompletion();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public String getMethod() {
         return "sqlite";
     }
