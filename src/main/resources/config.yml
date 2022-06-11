@@ -19,6 +19,6 @@ storage:
   # The below is only needed if you are using MySQL
   data:
     address: localhost
-    database: reconnect
+    database: reconnect.db
     username: root
     password: ''

@@ -31,6 +31,8 @@ public class ReconnectVelocity extends VelocityPlugin {
     @Inject
     public ReconnectVelocity(ProxyServer server, Logger logger) {
         this.init(server, logger, "reconnect");
+        instance = this;
+        Config.init();
         StorageManager.addMethod(new MySqlStorage());
         StorageManager.addMethod(new SQLiteStorage());
         storage = StorageManager.get(Config.DEFAULT.getString("storage.method"));
@@ -42,12 +44,10 @@ public class ReconnectVelocity extends VelocityPlugin {
             logger.info("Newer version available! ReconnectVelocity " + checker.getLatest());
             logger.info("Get it here: " + checker.getLink());
         }
-        instance = this;
     }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        Config.init();
         getServer().getEventManager().register(this, new Listener());
     }
 

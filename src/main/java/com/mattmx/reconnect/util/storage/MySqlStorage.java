@@ -1,5 +1,6 @@
 package com.mattmx.reconnect.util.storage;
 
+import com.mattmx.reconnect.ReconnectVelocity;
 import com.mattmx.reconnect.util.Config;
 import org.simpleyaml.configuration.file.FileConfiguration;
 
@@ -13,18 +14,19 @@ public class MySqlStorage extends StorageMethod {
     public void init() {
         try {
             FileConfiguration config = Config.DEFAULT;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                    "jbdc:mysql://" +
-                            config.getString("storage.data.address", "localhost:3306") +
+                    "jdbc:mysql://" +
+                            config.getString("storage.data.address", "localhost:3306") + "/" +
                             config.getString("storage.data.database", "reconnect"),
                     config.getString("storage.data.username"), config.getString("storage.data.password")
             );
-            statement.setQueryTimeout(0);
             statement = conn.createStatement();
+            statement.setQueryTimeout(0);
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS reconnect_data(" +
-                                        "uuid TEXT," +
-                                        "lastserver TEXT)");
+                                        "uuid VARCHAR(255)," +
+                                        "lastserver MEDIUMTEXT," +
+                                        "PRIMARY KEY(uuid))");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -34,10 +36,9 @@ public class MySqlStorage extends StorageMethod {
     public void setLastServer(String uuid, String servername) {
         try {
             statement.executeUpdate(
-                    "IF EXISTS (SELECT * FROM reconnect_data WHERE uuid = '" + uuid + "')\n" +
-                            "UPDATE reconnect_data SET lastserver = " + servername + "\n" +
-                        "ELSE\n" +
-                            "INSERT INTO reconnect_data ('" + uuid + "', '" + servername + "')");
+                    "INSERT INTO reconnect_data VALUES ('" + uuid + "','" + servername + "')" +
+                            "ON DUPLICATE KEY UPDATE lastserver = '" + servername + "'"
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }
