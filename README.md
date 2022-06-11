@@ -129,7 +129,7 @@ Distributed under the MIT License.
 
 MattMX - [MattMX#0033](https://discord.gg)
 
-Project Link: [https://github.com/Matt-MX/AnnouncerVelocity](https://github.com/Matt-MX/AnnouncerVelocity)
+Project Link: [https://github.com/Matt-MX/ReconnectVelocity](https://github.com/Matt-MX/ReconnectVelocity)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
