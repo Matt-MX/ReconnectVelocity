@@ -24,7 +24,7 @@ public class VelocityChat {
 
     public static void clearChat(Player p) {
         for (int i = 0; i < 100; i++) {
-            p.sendMessage(Component.text(""));
+            p.sendMessage(Component.text(""), MessageType.SYSTEM);
         }
     }
 
