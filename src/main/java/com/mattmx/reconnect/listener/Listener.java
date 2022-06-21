@@ -13,6 +13,7 @@ import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.audience.MessageType;
 import org.simpleyaml.configuration.file.FileConfiguration;
 
 import java.util.concurrent.CancellationException;
