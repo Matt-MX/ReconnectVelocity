@@ -37,7 +37,7 @@ public class Listener {
                 } catch (CancellationException | CompletionException exception) {
                     if (config.getBoolean("not-available")) {
                         ReconnectVelocity.get().getServer().getScheduler().buildTask(ReconnectVelocity.get(), () -> {
-                            config.getStringList("not-available-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player), MessageType.SYSTEM));
+                            config.getStringList("not-available-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player)), MessageType.SYSTEM);
                         }).delay(1, TimeUnit.SECONDS).schedule();
                     }
                     return;
@@ -45,7 +45,7 @@ public class Listener {
                 e.setInitialServer(server);
                 if (config.getBoolean("message-on-reconnect") && !prev.equalsIgnoreCase(config.getString("fallback"))) {
                     ReconnectVelocity.get().getServer().getScheduler().buildTask(ReconnectVelocity.get(), () -> {
-                        config.getStringList("reconnect-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player), MessageType.SYSTEM));
+                        config.getStringList("reconnect-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player)) ,MessageType.SYSTEM);
                     }).delay(1, TimeUnit.SECONDS).schedule();
                 }
             }
