@@ -5,6 +5,7 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.audience.MessageType;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class VelocityChat {
 
     public static void clearChat(Player p) {
         for (int i = 0; i < 100; i++) {
-            p.sendMessage(Component.text(""));
+            p.sendMessage(Component.text(""), MessageType.SYSTEM);
         }
     }
 
