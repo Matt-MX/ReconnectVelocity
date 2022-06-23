@@ -37,7 +37,7 @@ public class Listener {
                 } catch (CancellationException | CompletionException exception) {
                     if (config.getBoolean("not-available")) {
                         ReconnectVelocity.get().getServer().getScheduler().buildTask(ReconnectVelocity.get(), () -> {
-                            config.getStringList("not-available-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player)), MessageType.SYSTEM);
+                            config.getStringList("not-available-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player), MessageType.SYSTEM));
                         }).delay(1, TimeUnit.SECONDS).schedule();
                     }
                     return;
@@ -45,7 +45,7 @@ public class Listener {
                 e.setInitialServer(server);
                 if (config.getBoolean("message-on-reconnect") && !prev.equalsIgnoreCase(config.getString("fallback"))) {
                     ReconnectVelocity.get().getServer().getScheduler().buildTask(ReconnectVelocity.get(), () -> {
-                        config.getStringList("reconnect-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player)) ,MessageType.SYSTEM);
+                        config.getStringList("reconnect-message").forEach(l -> player.sendMessage(VelocityChat.color(l, player) ,MessageType.SYSTEM));
                     }).delay(1, TimeUnit.SECONDS).schedule();
                 }
             }
@@ -61,9 +61,9 @@ public class Listener {
     public void login(LoginEvent e) {
         if (e.getPlayer().hasPermission("velocity.reconnect.admin")) {
             if (!ReconnectVelocity.get().getUpdateChecker().isLatest()) {
-                e.getPlayer().sendMessage(VelocityChat.color("&6&lReconnect &7» &9Newer version available! &fReconnect v" + ReconnectVelocity.get().getUpdateChecker().getLatest(),)
+                e.getPlayer().sendMessage(VelocityChat.color("&6&lReconnect &7» &9Newer version available! &fReconnect v" + ReconnectVelocity.get().getUpdateChecker().getLatest())
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, ReconnectVelocity.get().getUpdateChecker().getLink()))
-                        .hoverEvent(HoverEvent.showText(VelocityChat.color("&6Click to update!"))));
+                        .hoverEvent(HoverEvent.showText(VelocityChat.color("&6Click to update!"))), MessageType.SYSTEM);
             }
         }
     }

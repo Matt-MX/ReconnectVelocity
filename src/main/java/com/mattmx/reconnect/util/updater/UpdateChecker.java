@@ -11,15 +11,6 @@ import java.nio.Buffer;
 
 public class UpdateChecker {
 
-    public static void main(String[] args) {
-        UpdateChecker checker = new UpdateChecker().get("https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest");
-        if (checker.isLatest("0.1")) {
-            System.out.println("Running latest!");
-        } else {
-            System.out.println("Newer version available (" + checker.getLatest() + ")\n" + checker.getLink());
-        }
-    }
-
     private String content;
     private String latest;
     private String link;
