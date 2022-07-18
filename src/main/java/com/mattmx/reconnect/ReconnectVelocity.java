@@ -18,7 +18,7 @@ import org.yaml.snakeyaml.Yaml;
 @Plugin(
         id = "reconnect",
         name = "ReconnectVelocity",
-        version = "1.1",
+        version = "1.3",
         description = "Reconnect your players to their last server...",
         url = "https://www.mattmx.com/",
         authors = {"MattMX"}

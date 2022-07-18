@@ -28,11 +28,20 @@ public class Listener {
         String prev = ReconnectVelocity.get().getStorageManager().get().getLastServer(player.getUniqueId().toString());
         RegisteredServer server;
         FileConfiguration config = Config.DEFAULT;
+        // Check if they have the basic permission node
         if (!player.hasPermission("velocity.reconnect")) return;
+        // Check if per-server-premissions is enabled, and check if they have permissions
+        if (config.getBoolean("per-server-permissions") && !player.hasPermission("velocity.reconnect." + prev)) return;
+        // Check if the server is blacklisted
+        if (config.getStringList("blacklist").contains(prev)) return;
+        // Not null check
         if (prev != null) {
+            // Get the RegisteredServer
             server = ReconnectUtil.getServer(prev);
+            // Not null check
             if (server != null) {
                 try {
+                    // Make sure they can join
                     server.ping();
                 } catch (CancellationException | CompletionException exception) {
                     if (config.getBoolean("not-available")) {

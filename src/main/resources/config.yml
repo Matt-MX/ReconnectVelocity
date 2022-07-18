@@ -8,6 +8,14 @@ not-available: true
 not-available-message:
   - "&7Unable to reconnect you to your last server."
 
+# For each server, do want to make sure that user has permissions to reconnect to that server
+# permission: velocity.reconnect.#servername
+per-server-permissions: false
+
+# List any servers that you do not want people to reconnect to.
+blacklist:
+  - servername
+
 ###################### STORAGE
 # Default: "yaml"
 # Options:
