@@ -16,6 +16,11 @@ per-server-permissions: false
 blacklist:
   - servername
 
+# If set to true, prevents connection to fallback servers.
+# Server should not be on the blacklist.
+prevent-fallback: false
+prevent-fallback-message: ''
+
 ###################### STORAGE
 # Default: "yaml"
 # Options:

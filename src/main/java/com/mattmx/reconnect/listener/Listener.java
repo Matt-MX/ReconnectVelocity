@@ -5,17 +5,22 @@ import com.mattmx.reconnect.util.Config;
 import com.mattmx.reconnect.util.ReconnectUtil;
 import com.mattmx.reconnect.util.VelocityChat;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
+import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
-import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.audience.MessageType;
+import org.simpleyaml.configuration.Configuration;
 import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 
+import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
@@ -74,6 +79,30 @@ public class Listener {
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, ReconnectVelocity.get().getUpdateChecker().getLink()))
                         .hoverEvent(HoverEvent.showText(VelocityChat.color("&6Click to update!"))), MessageType.SYSTEM);
             }
+        }
+    }
+
+    /**
+     * Prevents switching to a fallback server if the server is not on the blacklist.
+     * Off by default and enabled in the configuration.
+     * Also uses alternative message, if available.
+     *
+     * @param e injected event
+     */
+    @Subscribe
+    public void kicked(KickedFromServerEvent e) {
+        Configuration config = Config.DEFAULT;
+        if (!config.getBoolean("prevent-fallback", false)) return;
+
+        RegisteredServer server = e.getServer();
+        if (config.getStringList("blacklist").contains(server.getServerInfo().getName())) return;
+
+        KickedFromServerEvent.ServerKickResult result = e.getResult();
+        if (result instanceof KickedFromServerEvent.RedirectPlayer)  {
+            String string = config.getString("prevent-fallback-message", "");
+            Component reason = string.isEmpty() ? e.getServerKickReason().orElse(Component.empty())
+                    : VelocityChat.color(string);
+            e.setResult(KickedFromServerEvent.DisconnectPlayer.create(reason));
         }
     }
 }
