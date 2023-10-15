@@ -2,12 +2,9 @@ package com.mattmx.reconnect.util.storage;
 
 
 import com.mattmx.reconnect.ReconnectVelocity;
-import org.yaml.snakeyaml.Yaml;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StorageManager {
     private static List<StorageMethod> methods = new ArrayList<>();

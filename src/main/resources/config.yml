@@ -35,3 +35,6 @@ storage:
     database: reconnect.db
     username: root
     password: ''
+
+# LiteBans support: If set to true, hooks into the LiteBans api to prevent players from reconnecting to banned servers
+litebans: false

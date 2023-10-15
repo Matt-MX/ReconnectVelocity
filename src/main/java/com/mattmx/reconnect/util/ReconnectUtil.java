@@ -1,10 +1,7 @@
 package com.mattmx.reconnect.util;
 
 import com.mattmx.reconnect.ReconnectVelocity;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-
-import java.io.IOException;
 
 public class ReconnectUtil {
 

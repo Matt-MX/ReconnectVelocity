@@ -1,8 +1,6 @@
 package com.mattmx.reconnect.util;
 
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.velocitypowered.api.proxy.server.RegisteredServer;
 import org.jetbrains.annotations.NotNull;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 import org.slf4j.Logger;
@@ -10,9 +8,7 @@ import org.slf4j.Logger;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class VelocityPlugin {
     private String namespace;

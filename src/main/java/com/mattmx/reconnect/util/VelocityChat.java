@@ -2,10 +2,10 @@ package com.mattmx.reconnect.util;
 
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.audience.MessageType;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
