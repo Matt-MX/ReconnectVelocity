@@ -5,20 +5,19 @@ import com.mattmx.reconnect.util.Config;
 import com.mattmx.reconnect.util.ReconnectUtil;
 import com.mattmx.reconnect.util.VelocityChat;
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.connection.LoginEvent;
 import com.velocitypowered.api.event.player.KickedFromServerEvent;
 import com.velocitypowered.api.event.player.PlayerChooseInitialServerEvent;
 import com.velocitypowered.api.event.player.ServerConnectedEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import litebans.api.Database;
+import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.audience.MessageType;
 import org.simpleyaml.configuration.Configuration;
 import org.simpleyaml.configuration.file.FileConfiguration;
-import org.simpleyaml.configuration.file.YamlConfiguration;
 import org.slf4j.Logger;
 
 import java.util.List;
@@ -28,12 +27,27 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 
 public class Listener {
+    private static boolean litebans = false;
+
+    static {
+        if (Config.DEFAULT.getBoolean("litebans")) {
+            try {
+                Class.forName("litebans.api.Database");
+                litebans = true;
+            } catch (final ClassNotFoundException exception) {
+            }
+        }
+    }
 
     @Subscribe
     public void choose(PlayerChooseInitialServerEvent e) {
         if (isForcedHost(e)) return;
         Player player = e.getPlayer();
         String prev = ReconnectVelocity.get().getStorageManager().get().getLastServer(player.getUniqueId().toString());
+
+        if (this.isBanned(player, prev))
+            return;
+
         RegisteredServer server;
         FileConfiguration config = Config.DEFAULT;
         // Check if they have the basic permission node
@@ -67,6 +81,13 @@ public class Listener {
                 }
             }
         }
+    }
+
+    private boolean isBanned(final Player p, final String prev) {
+        if (!litebans)
+            return false;
+
+        return Database.get().isPlayerBanned(p.getUniqueId(), p.getRemoteAddress().getAddress().getHostAddress(), prev);
     }
 
     private boolean isForcedHost(PlayerChooseInitialServerEvent e) {

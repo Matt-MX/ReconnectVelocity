@@ -3,17 +3,18 @@ package com.mattmx.reconnect;
 import com.google.inject.Inject;
 import com.mattmx.reconnect.listener.Listener;
 import com.mattmx.reconnect.util.Config;
-import com.mattmx.reconnect.util.ReconnectUtil;
 import com.mattmx.reconnect.util.VelocityPlugin;
-import com.mattmx.reconnect.util.storage.*;
+import com.mattmx.reconnect.util.storage.MySqlStorage;
+import com.mattmx.reconnect.util.storage.SQLiteStorage;
+import com.mattmx.reconnect.util.storage.StorageManager;
 import com.mattmx.reconnect.util.updater.UpdateChecker;
-import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.slf4j.Logger;
-import org.yaml.snakeyaml.Yaml;
 
 @Plugin(
         id = "reconnect",
@@ -21,7 +22,8 @@ import org.yaml.snakeyaml.Yaml;
         version = "1.3",
         description = "Reconnect your players to their last server...",
         url = "https://www.mattmx.com/",
-        authors = {"MattMX"}
+        authors = {"MattMX"},
+        dependencies = { @Dependency(id = "litebans", optional = true) }
 )
 public class ReconnectVelocity extends VelocityPlugin {
     static ReconnectVelocity instance;

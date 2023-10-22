@@ -1,10 +1,8 @@
 package com.mattmx.reconnect.util.storage;
 
-import com.mattmx.reconnect.ReconnectVelocity;
 import com.mattmx.reconnect.util.Config;
 import org.simpleyaml.configuration.file.FileConfiguration;
 
-import java.io.IOException;
 import java.sql.*;
 
 public class MySqlStorage extends StorageMethod {
