@@ -24,7 +24,7 @@ prevent-fallback-message: ''
 ###################### STORAGE
 # Default: "yaml"
 # Options:
-#   - "mysql" <- Remote or Local SQL database
+#   - "mysql/mariadb" <- Remote or Local SQL database
 #   - "yaml" <- Local .yml file
 #   - "sqlite" <- Local SQL database
 storage:
@@ -35,6 +35,17 @@ storage:
     database: reconnect.db
     username: root
     password: ''
+    # Advanced connection pool settings. Most users will not need to change these.
+    # https://github.com/brettwooldridge/HikariCP/blob/dev/README.md#gear-configuration-knobs-baby
+    connection-parameters:
+      useJdbcString: false
+      jdbcString: "jdbc:mysql://host:3306/db"
+      connectionTimeout: 30000
+      idleTimeout: 600000
+      keepaliveTime: 0
+      maxLifetime: 1800000
+      minimumIdle: 10
+      maximumPoolSize: 10
 
 # LiteBans support: If set to true, hooks into the LiteBans api to prevent players from reconnecting to banned servers
 litebans: false

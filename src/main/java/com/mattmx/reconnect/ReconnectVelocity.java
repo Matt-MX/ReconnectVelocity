@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.mattmx.reconnect.listener.Listener;
 import com.mattmx.reconnect.util.Config;
 import com.mattmx.reconnect.util.VelocityPlugin;
+import com.mattmx.reconnect.util.storage.MariaDbStorage;
 import com.mattmx.reconnect.util.storage.MySqlStorage;
 import com.mattmx.reconnect.util.storage.SQLiteStorage;
 import com.mattmx.reconnect.util.storage.StorageManager;
@@ -36,6 +37,7 @@ public class ReconnectVelocity extends VelocityPlugin {
         instance = this;
         Config.init();
         StorageManager.addMethod(new MySqlStorage());
+        StorageManager.addMethod(new MariaDbStorage());
         StorageManager.addMethod(new SQLiteStorage());
         storage = StorageManager.get(Config.DEFAULT.getString("storage.method"));
         checker = new UpdateChecker();
