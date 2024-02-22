@@ -1,42 +1,44 @@
 package com.mattmx.reconnect.util.storage;
 
 import com.mattmx.reconnect.util.Config;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import org.simpleyaml.configuration.file.FileConfiguration;
 
 import java.sql.*;
 
 public class MySqlStorage extends StorageMethod {
-    private Statement statement;
+    private HikariDataSource ds;
 
     @Override
     public void init() {
-        try {
-            FileConfiguration config = Config.DEFAULT;
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://" +
-                            config.getString("storage.data.address", "localhost:3306") + "/" +
-                            config.getString("storage.data.database", "reconnect"),
-                    config.getString("storage.data.username"), config.getString("storage.data.password")
-            );
-            statement = conn.createStatement();
-            statement.setQueryTimeout(0);
+        FileConfiguration config = Config.DEFAULT;
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(com.mysql.cj.jdbc.Driver.class.getName());
+        hikariConfig.setJdbcUrl("jdbc:mysql://" + config.getString("storage.data.address", "localhost:3306") + "/"
+                + config.getString("storage.data.database", "reconnect"));
+        hikariConfig.setUsername(config.getString("storage.data.username"));
+        hikariConfig.setPassword(config.getString("storage.data.password"));
+        ds = new HikariDataSource(hikariConfig);
+        try (Connection con = ds.getConnection()) {
+            Statement statement = con.createStatement();
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS reconnect_data(" +
-                                        "uuid VARCHAR(255)," +
-                                        "lastserver MEDIUMTEXT," +
-                                        "PRIMARY KEY(uuid))");
-        } catch (SQLException | ClassNotFoundException e) {
+                    "uuid VARCHAR(255)," +
+                    "lastserver MEDIUMTEXT," +
+                    "PRIMARY KEY(uuid))");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void setLastServer(String uuid, String servername) {
-        try {
+        try (Connection con = ds.getConnection()) {
+            Statement statement = con.createStatement();
             statement.executeUpdate(
                     "INSERT INTO reconnect_data VALUES ('" + uuid + "','" + servername + "')" +
-                            "ON DUPLICATE KEY UPDATE lastserver = '" + servername + "'"
-            );
+                            "ON DUPLICATE KEY UPDATE lastserver = '" + servername + "'");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -44,7 +46,8 @@ public class MySqlStorage extends StorageMethod {
 
     @Override
     public String getLastServer(String uuid) {
-        try {
+        try (Connection con = ds.getConnection()) {
+            Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery("SELECT lastserver FROM reconnect_data WHERE uuid = '" + uuid + "'");
             if (rs.next()) {
                 return rs.getString("lastserver");
@@ -57,11 +60,7 @@ public class MySqlStorage extends StorageMethod {
 
     @Override
     public void save() {
-        try {
-            statement.closeOnCompletion();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        ds.close();
     }
 
     @Override
