@@ -139,7 +139,7 @@ public class Listener {
     @Subscribe
     public void login(LoginEvent e) {
         if (e.getPlayer().hasPermission("velocity.reconnect.admin")) {
-            if (!ReconnectVelocity.get().getUpdateChecker().isLatest()) {
+            if (ReconnectVelocity.get().getUpdateChecker() != null && !ReconnectVelocity.get().getUpdateChecker().isLatest()) {
                 e.getPlayer().sendMessage(VelocityChat.color("&6&lReconnect &7» &9Newer version available! &fReconnect v" + ReconnectVelocity.get().getUpdateChecker().getLatest())
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, ReconnectVelocity.get().getUpdateChecker().getLink()))
                         .hoverEvent(HoverEvent.showText(VelocityChat.color("&6Click to update!"))), MessageType.SYSTEM);

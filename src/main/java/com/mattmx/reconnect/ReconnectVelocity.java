@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import com.mattmx.reconnect.listener.Listener;
 import com.mattmx.reconnect.util.Config;
 import com.mattmx.reconnect.util.VelocityPlugin;
-import com.mattmx.reconnect.util.storage.MariaDbStorage;
-import com.mattmx.reconnect.util.storage.MySqlStorage;
-import com.mattmx.reconnect.util.storage.SQLiteStorage;
-import com.mattmx.reconnect.util.storage.StorageManager;
+import com.mattmx.reconnect.util.storage.*;
 import com.mattmx.reconnect.util.updater.UpdateChecker;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -20,7 +17,7 @@ import org.slf4j.Logger;
 @Plugin(
         id = "reconnect",
         name = "ReconnectVelocity",
-        version = "1.3",
+        version = "1.4",
         description = "Reconnect your players to their last server...",
         url = "https://www.mattmx.com/",
         authors = {"MattMX"},
@@ -39,14 +36,20 @@ public class ReconnectVelocity extends VelocityPlugin {
         StorageManager.addMethod(new MySqlStorage());
         StorageManager.addMethod(new MariaDbStorage());
         StorageManager.addMethod(new SQLiteStorage());
+        StorageManager.addMethod(new PostgreSQLStorage());
         storage = StorageManager.get(Config.DEFAULT.getString("storage.method"));
-        checker = new UpdateChecker();
-        if (checker.get("https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest")
-                .isLatest(this.getClass().getAnnotation(Plugin.class).version())) {
-            logger.info("Running the latest version! ReconnectVelocity " + checker.getLatest());
-        } else {
-            logger.info("Newer version available! ReconnectVelocity " + checker.getLatest());
-            logger.info("Get it here: " + checker.getLink());
+        if (Config.DEFAULT.getBoolean("check-updates", false)) {
+            checker = new UpdateChecker().get(this.getClass().getAnnotation(Plugin.class).version(), "https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest");
+            if (checker.isValid()) {
+                if (checker.isLatest()) {
+                    logger.info("Running the latest version! ReconnectVelocity " + checker.getLatest());
+                } else {
+                    logger.info("Newer version available! ReconnectVelocity " + checker.getLatest());
+                    logger.info("Get it here: " + checker.getLink());
+                }
+            } else {
+                logger.warn("Unable to fetch the latest version of ReconnectVelocity!");
+            }
         }
     }
 

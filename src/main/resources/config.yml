@@ -25,11 +25,12 @@ prevent-fallback-message: ''
 # Default: "yaml"
 # Options:
 #   - "mysql/mariadb" <- Remote or Local SQL database
+#   - "postgresql" <- Remote or Local PostgreSQL database
 #   - "yaml" <- Local .yml file
 #   - "sqlite" <- Local SQL database
 storage:
   method: "yaml"
-  # The below is only needed if you are using MySQL
+  # The below is only needed if you are using a remote database
   data:
     address: localhost
     database: reconnect.db
@@ -49,3 +50,6 @@ storage:
 
 # LiteBans support: If set to true, hooks into the LiteBans api to prevent players from reconnecting to banned servers
 litebans: false
+
+# Should the plugin check for updates on startup
+check-updates: true
