@@ -40,13 +40,6 @@ tasks {
         mergeServiceFiles()
     }
     runVelocity {
-//        velocityVersion(libs.versions.velocity.api.get())
+        velocityVersion(libs.versions.velocity.get())
     }
-//    withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
-//        javaLauncher.set(javaToolchains.launcherFor {
-//            languageVersion = JavaLanguageVersion.of(17)
-//            vendor = JvmVendorSpec.JETBRAINS
-//        })
-//        jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
-//    }
 }

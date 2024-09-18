@@ -33,9 +33,6 @@ public class ReconnectListener {
 
         Player player = event.getPlayer();
 
-        // Check if they have the basic permission node
-        if (!player.hasPermission("velocity.reconnect")) return;
-
         String previousServerName = plugin.getStorageManager()
             .getStorageMethod()
             .getLastServer(player.getUniqueId());
