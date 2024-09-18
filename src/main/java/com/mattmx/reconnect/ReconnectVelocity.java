@@ -69,6 +69,8 @@ public class ReconnectVelocity {
         StorageManager.registerStorageMethod(new MariaDbStorage());
         StorageManager.registerStorageMethod(new SQLiteStorage());
         StorageManager.registerStorageMethod(new YamlStorage());
+        StorageManager.registerStorageMethod(new PostgreSQLStorage());
+
         if (proxy.getPluginManager().isLoaded("luckperms")) {
             StorageManager.registerStorageMethod(new LuckPermsStorage());
         }
@@ -77,16 +79,18 @@ public class ReconnectVelocity {
 
         checker = new UpdateChecker();
 
-        String url = "https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest";
-        try {
-            if (checker.get(url).isLatest(this.getClass().getAnnotation(Plugin.class).version())) {
-                getLogger().info("Running the latest version! ReconnectVelocity " + checker.getLatest());
-            } else {
-                getLogger().info("Newer version available! ReconnectVelocity " + checker.getLatest());
-                getLogger().info("Get it here: " + checker.getLink());
+        if (getConfig().checkUpdates) {
+            String url = "https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest";
+            try {
+                if (checker.get(url).isLatest(this.getClass().getAnnotation(Plugin.class).version())) {
+                    getLogger().info("Running the latest version! ReconnectVelocity " + checker.getLatest());
+                } else {
+                    getLogger().info("Newer version available! ReconnectVelocity " + checker.getLatest());
+                    getLogger().info("Get it here: " + checker.getLink());
+                }
+            } catch (Exception failure) {
+                getLogger().info("Unable to get latest release!");
             }
-        } catch (Exception failure) {
-            getLogger().info("Unable to get latest release!");
         }
     }
 
