@@ -35,8 +35,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="rc_banner.png">
-    <img src="rc_banner.png" alt="Logo" width="512">
+  <a href="img/rc_banner.png">
+    <img src="img/rc_banner.png" alt="Logo" width="512">
   </a>
 
 <h3 align="center">Reconnect [Velocity]</h3>

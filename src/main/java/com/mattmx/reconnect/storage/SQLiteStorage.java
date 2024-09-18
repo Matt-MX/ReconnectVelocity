@@ -1,25 +1,27 @@
-package com.mattmx.reconnect.util.storage;
+package com.mattmx.reconnect.storage;
 
+import com.mattmx.reconnect.ReconnectConfig;
 import com.mattmx.reconnect.ReconnectVelocity;
-import com.mattmx.reconnect.util.Config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import org.simpleyaml.configuration.file.FileConfiguration;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SQLiteStorage extends StorageMethod {
     private HikariDataSource ds;
 
     @Override
     public void init() {
-        FileConfiguration config = Config.DEFAULT;
+        ReconnectConfig config = ReconnectVelocity.get().getConfig();
+
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(org.sqlite.JDBC.class.getName());
-        hikariConfig.setJdbcUrl("jdbc:sqlite:" + ReconnectVelocity.get().getDataFolder() + "/"
-            + config.getString("storage.data.database", "reconnect.db"));
-        hikariConfig.setPoolName(ReconnectVelocity.get().getName());
+        hikariConfig.setJdbcUrl("jdbc:sqlite:" + ReconnectVelocity.get().getDataDirectory() + "/" + config.storage.data.database);
+        hikariConfig.setPoolName("reconnect");
+
         ds = new HikariDataSource(hikariConfig);
         try (Connection con = ds.getConnection()) {
             Statement statement = con.createStatement();

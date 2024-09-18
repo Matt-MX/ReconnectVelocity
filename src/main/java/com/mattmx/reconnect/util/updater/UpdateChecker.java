@@ -1,6 +1,8 @@
 package com.mattmx.reconnect.util.updater;
 
-import org.json.JSONObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,10 +38,15 @@ public class UpdateChecker {
 
     private void getData() {
         if (content == null) return;
-        JSONObject obj = new JSONObject(content);
+        JsonElement root = JsonParser.parseString(content);
+
+        if (root.isJsonObject()) return;
+
+        JsonObject obj = root.getAsJsonObject();
+
         if (obj.get("tag_name") != null) {
-            this.latest = obj.getString("tag_name");
-            this.link = obj.getString("html_url");
+            this.latest = obj.get("tag_name").getAsString();
+            this.link = obj.get("html_url").getAsString();
         }
     }
 

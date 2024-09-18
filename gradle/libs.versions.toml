@@ -1,0 +1,32 @@
+[versions]
+
+updateVersions = "0.51.0"
+shadow = "8.1.8"
+velocity= "3.3.0-SNAPSHOT"
+runPaper = "2.2.4"
+litebans = "0.5.0"
+luckperms = "5.4"
+
+yaml = "1.7.2"
+mysql = "8.0.29"
+maria = "3.3.3"
+sqlite = "3.41.2.2"
+hikari = "5.1.0"
+
+[libraries]
+
+velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
+litebans-api = { module = "com.gitlab.ruany:LiteBansAPI", version.ref = "litebans" }
+luckperms-api = { module = "net.luckperms:api", version.ref = "luckperms" }
+
+storage-yaml = { module = "me.carleslc.Simple-YAML:Simple-Yaml", version.ref = "yaml" }
+storage-mysql = { module = "mysql:mysql-connector-java", version.ref = "mysql" }
+storage-maria = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "maria" }
+storage-sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
+storage-hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+
+[plugins]
+
+updateDeps = { id = "com.github.ben-manes.versions", version.ref = "updateVersions" }
+shadow = { id = "io.github.goooler.shadow", version.ref = "shadow" }
+runVelocity = { id = "xyz.jpenilla.run-velocity", version.ref = "runPaper" }

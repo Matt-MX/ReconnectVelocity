@@ -1,19 +1,30 @@
-package com.mattmx.reconnect.util.storage;
+package com.mattmx.reconnect.storage;
 
 import com.mattmx.reconnect.ReconnectVelocity;
-import com.mattmx.reconnect.util.Config;
 import org.simpleyaml.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.io.IOException;
 
 public class YamlStorage extends StorageMethod {
 
     public YamlConfiguration data;
-    public String dataPath = ReconnectVelocity.get().getDataFolder() + "/data.yml";
+    public File dataPath = ReconnectVelocity.get()
+        .getDataDirectory()
+        .resolve("data.yml")
+        .toFile();
 
     @Override
     public void init() {
-        data = Config.get(dataPath);
+        if (!dataPath.exists()) {
+            try {
+                dataPath.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        data = YamlConfiguration.loadConfiguration(dataPath);
     }
 
     @Override
