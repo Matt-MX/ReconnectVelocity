@@ -93,6 +93,7 @@ public class ReconnectListener {
 
     @Subscribe
     public void onPlayerLogin(@NotNull LoginEvent event) {
+        if (!plugin.getConfig().checkUpdates) return;
 
         UpdateChecker checker = plugin.getUpdateChecker();
 

@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.storage.mysql)
     implementation(libs.storage.maria)
     implementation(libs.storage.sqlite)
+    implementation(libs.storage.postgresql)
     implementation(libs.storage.hikari)
 }
 
