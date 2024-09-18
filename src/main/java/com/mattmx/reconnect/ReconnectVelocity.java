@@ -77,12 +77,16 @@ public class ReconnectVelocity {
 
         checker = new UpdateChecker();
 
-        if (checker.get("https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest")
-            .isLatest(this.getClass().getAnnotation(Plugin.class).version())) {
-            getLogger().info("Running the latest version! ReconnectVelocity " + checker.getLatest());
-        } else {
-            getLogger().info("Newer version available! ReconnectVelocity " + checker.getLatest());
-            getLogger().info("Get it here: " + checker.getLink());
+        String url = "https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest";
+        try {
+            if (checker.get(url).isLatest(this.getClass().getAnnotation(Plugin.class).version())) {
+                getLogger().info("Running the latest version! ReconnectVelocity " + checker.getLatest());
+            } else {
+                getLogger().info("Newer version available! ReconnectVelocity " + checker.getLatest());
+                getLogger().info("Get it here: " + checker.getLink());
+            }
+        } catch (Exception failure) {
+            getLogger().info("Unable to get latest release!");
         }
     }
 
@@ -119,7 +123,9 @@ public class ReconnectVelocity {
         try {
             this.config = loader.load().get(ReconnectConfig.class);
         } catch (ConfigurateException e) {
-            throw new RuntimeException(e);
+            getLogger().error("There were errors when loading the existing config. Renaming and resetting!");
+            configLocation.renameTo(configLocation.getParentFile().toPath().resolve("config-old.yml").toFile());
+            saveDefaultConfig();
         }
     }
 

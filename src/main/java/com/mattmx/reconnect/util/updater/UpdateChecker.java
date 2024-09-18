@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -20,34 +22,34 @@ public class UpdateChecker {
     public UpdateChecker get(String url) {
         try {
             StringBuilder builder = new StringBuilder();
-            URL u = new URL(url);
+            URL u = new URI(url).toURL();
             URLConnection connection = u.openConnection();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
             String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line + "\n");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
             }
+
             content = builder.toString();
-            getData();
+
+            JsonElement root = JsonParser.parseString(content);
+
+            if (!root.isJsonObject()) throw new RuntimeException("Unable to get latest version!");
+
+            JsonObject obj = root.getAsJsonObject();
+
+            if (obj.get("tag_name") != null) {
+                this.latest = obj.get("tag_name").getAsString();
+                this.link = obj.get("html_url").getAsString();
+            }
+
             return this;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | URISyntaxException ex) {
+            ex.printStackTrace();
         }
         return this;
-    }
-
-    private void getData() {
-        if (content == null) return;
-        JsonElement root = JsonParser.parseString(content);
-
-        if (root.isJsonObject()) return;
-
-        JsonObject obj = root.getAsJsonObject();
-
-        if (obj.get("tag_name") != null) {
-            this.latest = obj.get("tag_name").getAsString();
-            this.link = obj.get("html_url").getAsString();
-        }
     }
 
     public boolean isLatest(String version) {
