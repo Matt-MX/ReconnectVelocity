@@ -1,9 +1,11 @@
 package com.mattmx.reconnect;
 
+import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
 
 import java.util.List;
 
+@ConfigSerializable
 public class ReconnectConfig {
 
     @Comment("Do we want to send players a message when they are reconnected to a server?")
@@ -47,12 +49,14 @@ public class ReconnectConfig {
         """)
     public StorageOptions storage = new StorageOptions();
 
+    @ConfigSerializable
     public static class StorageOptions {
         public String method = "yaml";
 
         public StorageOptionsData data = new StorageOptionsData();
     }
 
+    @ConfigSerializable
     public static class StorageOptionsData {
         public String address = "localhost:3306";
         @Comment("For sqlite or yaml storage types this will be the file location.")
@@ -67,9 +71,10 @@ public class ReconnectConfig {
         public AdvancedConnectionOptions connectionOptions = new AdvancedConnectionOptions();
     }
 
+    @ConfigSerializable
     public static class AdvancedConnectionOptions {
         public boolean useJdbcString = false;
-        public String jdbcString = "jdbc:mysql://host:3306/db";
+        public String jdbcString = "jdbc:mysql://localhost:3306/db";
         public long connectionTimeout = 30000;
         public long idleTimeout = 600000;
         public long keepAliveTime = 0;

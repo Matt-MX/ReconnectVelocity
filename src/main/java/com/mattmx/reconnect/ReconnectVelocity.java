@@ -3,7 +3,6 @@ package com.mattmx.reconnect;
 import com.google.inject.Inject;
 import com.mattmx.reconnect.storage.*;
 import com.mattmx.reconnect.util.updater.UpdateChecker;
-import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
@@ -15,6 +14,9 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,6 +43,8 @@ public class ReconnectVelocity {
     private final @Nullable Logger logger;
     private final @Nullable Path dataDirectory;
 
+    private final File configLocation;
+    private final YamlConfigurationLoader loader;
     private @Nullable ReconnectConfig config;
     private @Nullable StorageManager storage;
     private UpdateChecker checker;
@@ -50,6 +54,12 @@ public class ReconnectVelocity {
         this.proxy = server;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
+
+        configLocation = getDataDirectory().resolve("config.yml").toFile();
+
+        loader = YamlConfigurationLoader.builder()
+            .file(configLocation)
+            .build();
 
         instance = this;
 
@@ -93,27 +103,24 @@ public class ReconnectVelocity {
 
     @SuppressWarnings({"ResultOfMethodCallIgnored"})
     public void saveDefaultConfig() {
-        File filePath = getDataDirectory()
-            .resolve("config.toml")
-            .toFile();
-
-        if (!filePath.exists()) {
-            filePath.getParentFile().mkdirs();
+        if (!configLocation.exists()) {
+            configLocation.getParentFile().mkdirs();
             try {
-                filePath.createNewFile();
 
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                    writer.write(new TomlWriter().write(new ReconnectConfig()));
-                }
+                ConfigurationNode node = loader.load();
+                node.set(ReconnectConfig.class, new ReconnectConfig());
+                loader.save(node);
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        this.config = new Toml()
-            .read(filePath)
-            .to(ReconnectConfig.class);
+        try {
+            this.config = loader.load().get(ReconnectConfig.class);
+        } catch (ConfigurateException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Subscribe
