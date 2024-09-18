@@ -1,4 +1,4 @@
-package com.mattmx.reconnect.util.storage;
+package com.mattmx.reconnect.storage;
 
 import com.mattmx.reconnect.ReconnectVelocity;
 import com.mattmx.reconnect.util.Config;
@@ -9,18 +9,18 @@ import org.simpleyaml.configuration.file.FileConfiguration;
 
 import java.sql.*;
 
-public class MySqlStorage extends StorageMethod {
+public class MariaDbStorage extends StorageMethod {
     private HikariDataSource ds;
 
     @Override
     public void init() {
         FileConfiguration config = Config.DEFAULT;
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName(com.mysql.cj.jdbc.Driver.class.getName());
+        hikariConfig.setDriverClassName(org.mariadb.jdbc.Driver.class.getName());
         if (config.getBoolean("storage.data.connection-parameters.useJdbcString", false)) {
             hikariConfig.setJdbcUrl(config.getString("storage.data.connection-parameters.jdbcString", ""));
         } else {
-            hikariConfig.setJdbcUrl("jdbc:mysql://" + config.getString("storage.data.address", "localhost:3306") + "/"
+            hikariConfig.setJdbcUrl("jdbc:mariadb://" + config.getString("storage.data.address", "localhost:3306") + "/"
                     + config.getString("storage.data.database", "reconnect"));
         }
         hikariConfig.setUsername(config.getString("storage.data.username"));
@@ -77,6 +77,6 @@ public class MySqlStorage extends StorageMethod {
 
     @Override
     public String getMethod() {
-        return "mysql";
+        return "mariadb";
     }
 }

@@ -1,4 +1,4 @@
-package com.mattmx.reconnect.util.storage;
+package com.mattmx.reconnect.storage;
 
 import com.mattmx.reconnect.ReconnectVelocity;
 import com.mattmx.reconnect.util.Config;

@@ -1,0 +1,20 @@
+[versions]
+
+updateVersions = "0.51.0"
+shadow = "8.1.8"
+velocity= "3.3.0-SNAPSHOT"
+runPaper = "2.2.4"
+litebans = "0.5.0"
+luckperms = "5.4"
+
+[libraries]
+
+velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
+litebans-api = { module = "com.gitlab.ruany:LiteBansAPI", version.ref = "litebans" }
+luckperms-api = { module = "net.luckperms:api", version.ref = "luckperms" }
+
+[plugins]
+
+updateDeps = { id = "com.github.ben-manes.versions", version.ref = "updateVersions" }
+shadow = { id = "io.github.goooler.shadow", version.ref = "shadow" }
+runVelocity = { id = "xyz.jpenilla.run-velocity", version.ref = "runPaper" }
