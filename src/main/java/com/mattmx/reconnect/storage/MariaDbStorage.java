@@ -1,38 +1,41 @@
 package com.mattmx.reconnect.storage;
 
+import com.mattmx.reconnect.ReconnectConfig;
 import com.mattmx.reconnect.ReconnectVelocity;
-import com.mattmx.reconnect.util.Config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import org.simpleyaml.configuration.file.FileConfiguration;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class MariaDbStorage extends StorageMethod {
     private HikariDataSource ds;
 
     @Override
     public void init() {
-        FileConfiguration config = Config.DEFAULT;
+        ReconnectConfig config = ReconnectVelocity.get().getConfig();
+
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(org.mariadb.jdbc.Driver.class.getName());
-        if (config.getBoolean("storage.data.connection-parameters.useJdbcString", false)) {
-            hikariConfig.setJdbcUrl(config.getString("storage.data.connection-parameters.jdbcString", ""));
+        if (config.storage.data.connectionOptions.useJdbcString) {
+            hikariConfig.setJdbcUrl(config.storage.data.connectionOptions.jdbcString);
         } else {
-            hikariConfig.setJdbcUrl("jdbc:mariadb://" + config.getString("storage.data.address", "localhost:3306") + "/"
-                    + config.getString("storage.data.database", "reconnect"));
+            hikariConfig.setJdbcUrl("jdbc:mariadb://" + config.storage.data.address + "/" + config.storage.data.database);
         }
-        hikariConfig.setUsername(config.getString("storage.data.username"));
-        hikariConfig.setPassword(config.getString("storage.data.password"));
-        hikariConfig.setConnectionTimeout(config.getLong("storage.data.connection-parameters.connectionTimeout", 30000));
-        hikariConfig.setIdleTimeout(config.getLong("storage.data.connection-parameters.idleTimeout", 600000));
-        hikariConfig.setKeepaliveTime(config.getLong("storage.data.connection-parameters.keepaliveTime", 0));
-        hikariConfig.setMaxLifetime(config.getLong("storage.data.connection-parameters.maxLifetime", 1800000));
-        hikariConfig.setMinimumIdle(config.getInt("storage.data.connection-parameters.minimumIdle", 10));
-        hikariConfig.setMaximumPoolSize(config.getInt("storage.data.connection-parameters.maximumPoolSize", 10));
-        hikariConfig.setPoolName(ReconnectVelocity.get().getName());
+        hikariConfig.setUsername(config.storage.data.username);
+        hikariConfig.setPassword(config.storage.data.password);
+        hikariConfig.setConnectionTimeout(config.storage.data.connectionOptions.connectionTimeout);
+        hikariConfig.setIdleTimeout(config.storage.data.connectionOptions.idleTimeout);
+        hikariConfig.setKeepaliveTime(config.storage.data.connectionOptions.keepAliveTime);
+        hikariConfig.setMaxLifetime(config.storage.data.connectionOptions.maxLifetime);
+        hikariConfig.setMinimumIdle(config.storage.data.connectionOptions.minimumIdle);
+        hikariConfig.setMaximumPoolSize(config.storage.data.connectionOptions.maximumPoolSize);
+        hikariConfig.setPoolName("reconnect");
+
         ds = new HikariDataSource(hikariConfig);
+
         try (Connection con = ds.getConnection()) {
             Statement statement = con.createStatement();
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS reconnect_data(" +

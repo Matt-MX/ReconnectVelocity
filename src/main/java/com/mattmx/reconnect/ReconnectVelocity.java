@@ -2,7 +2,6 @@ package com.mattmx.reconnect;
 
 import com.google.inject.Inject;
 import com.mattmx.reconnect.storage.*;
-import com.mattmx.reconnect.util.Config;
 import com.mattmx.reconnect.util.updater.UpdateChecker;
 import com.moandjiezana.toml.Toml;
 import com.moandjiezana.toml.TomlWriter;
@@ -47,7 +46,7 @@ public class ReconnectVelocity {
     private UpdateChecker checker;
 
     @Inject
-    public ReconnectVelocity(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
+    public ReconnectVelocity(@Nullable ProxyServer server, @Nullable Logger logger, @DataDirectory @Nullable Path dataDirectory) {
         this.proxy = server;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
@@ -56,11 +55,13 @@ public class ReconnectVelocity {
 
         saveDefaultConfig();
 
-        Config.init();
-
         StorageManager.registerStorageMethod(new MySqlStorage());
         StorageManager.registerStorageMethod(new MariaDbStorage());
         StorageManager.registerStorageMethod(new SQLiteStorage());
+        StorageManager.registerStorageMethod(new YamlStorage());
+        StorageManager.registerStorageMethod(new LuckPermsStorage());
+
+        ReconnectCommand.register(this);
 
         loadStorage();
 
@@ -68,10 +69,10 @@ public class ReconnectVelocity {
 
         if (checker.get("https://api.github.com/repos/Matt-MX/ReconnectVelocity/releases/latest")
             .isLatest(this.getClass().getAnnotation(Plugin.class).version())) {
-            logger.info("Running the latest version! ReconnectVelocity " + checker.getLatest());
+            getLogger().info("Running the latest version! ReconnectVelocity " + checker.getLatest());
         } else {
-            logger.info("Newer version available! ReconnectVelocity " + checker.getLatest());
-            logger.info("Get it here: " + checker.getLink());
+            getLogger().info("Newer version available! ReconnectVelocity " + checker.getLatest());
+            getLogger().info("Get it here: " + checker.getLink());
         }
     }
 
@@ -79,6 +80,9 @@ public class ReconnectVelocity {
         StorageMethod method = StorageManager.getStorageMethodById(getConfig().storage.method);
 
         Objects.requireNonNull(method, "That storage method is invalid!");
+
+        // Shutdown current manager
+        getStorageManager().end();
 
         storage = StorageManager.createStorageManager(method);
     }

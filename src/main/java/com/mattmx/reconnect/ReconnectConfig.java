@@ -47,14 +47,14 @@ public class ReconnectConfig {
         """)
     public StorageOptions storage = new StorageOptions();
 
-    static class StorageOptions {
+    public static class StorageOptions {
         public String method = "yaml";
 
         public StorageOptionsData data = new StorageOptionsData();
     }
 
-    static class StorageOptionsData {
-        public String address = "localhost";
+    public static class StorageOptionsData {
+        public String address = "localhost:3306";
         @Comment("For sqlite or yaml storage types this will be the file location.")
         public String database = "reconnect.db";
         public String username = "root";
@@ -67,14 +67,14 @@ public class ReconnectConfig {
         public AdvancedConnectionOptions connectionOptions = new AdvancedConnectionOptions();
     }
 
-    static class AdvancedConnectionOptions {
+    public static class AdvancedConnectionOptions {
         public boolean useJdbcString = false;
         public String jdbcString = "jdbc:mysql://host:3306/db";
         public long connectionTimeout = 30000;
         public long idleTimeout = 600000;
         public long keepAliveTime = 0;
         public long maxLifetime = 1800000;
-        public long minimumIdle = 10;
-        public long maximumPoolSize = 10;
+        public int minimumIdle = 10;
+        public int maximumPoolSize = 10;
     }
 }

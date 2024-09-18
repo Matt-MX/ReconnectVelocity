@@ -16,6 +16,12 @@ dependencies {
 
     compileOnly(libs.litebans.api)
     compileOnly(libs.luckperms.api)
+
+    implementation(libs.storage.yaml)
+    implementation(libs.storage.mysql)
+    implementation(libs.storage.maria)
+    implementation(libs.storage.sqlite)
+    implementation(libs.storage.hikari)
 }
 
 sourceSets["main"].resources.srcDir("src/resources/")
