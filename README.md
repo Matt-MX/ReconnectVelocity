@@ -78,8 +78,6 @@ plugins folder in your Velocity server.
 
 Simply alter anything in the `config.yml` that is generated located in `./plugins/reconnect/config.yml`.
 
-To allow users to reconnect, make sure they have the permission `velocity.reconnect`!
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- Storage -->
