@@ -9,26 +9,22 @@ import java.util.Objects;
 
 public class StorageManager {
     private static final HashMap<String, StorageMethod> methods = new HashMap<>();
-    private @Nullable StorageMethod currentStorageMethod;
+    private final @NotNull StorageMethod currentStorageMethod;
+
+    public StorageManager(@NotNull StorageMethod method) {
+        this.currentStorageMethod = method;
+    }
 
     public void init() {
-        Objects.requireNonNull(currentStorageMethod, "Storage not initialized! Can't call init until it is initialized.").init();
+        currentStorageMethod.init();
     }
 
     public void end() {
-        Objects.requireNonNull(currentStorageMethod, "Storage not initialized! Can't call end until it is initialized.").save();
+        currentStorageMethod.save();
     }
 
     public @NotNull StorageMethod getStorageMethod() {
-        if (this.currentStorageMethod == null) {
-            throw new RuntimeException("There has been no Storage Method set!");
-        }
-
         return this.currentStorageMethod;
-    }
-
-    public void setCurrentStorageMethod(@NotNull StorageMethod currentStorageMethod) {
-        this.currentStorageMethod = currentStorageMethod;
     }
 
     public static void registerStorageMethod(@NotNull StorageMethod method) {
@@ -36,11 +32,8 @@ public class StorageManager {
     }
 
     public static StorageManager createStorageManager(@NotNull StorageMethod method) {
-        StorageManager manager = new StorageManager();
-        manager.setCurrentStorageMethod(method);
-
+        StorageManager manager = new StorageManager(method);
         manager.init();
-
         return manager;
     }
 

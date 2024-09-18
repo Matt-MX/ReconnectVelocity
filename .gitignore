@@ -4,3 +4,4 @@ build
 common/build
 gameserver/build
 proxy/build
+run/

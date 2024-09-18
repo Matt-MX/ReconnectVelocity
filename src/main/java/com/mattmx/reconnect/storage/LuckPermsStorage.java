@@ -1,5 +1,6 @@
 package com.mattmx.reconnect.storage;
 
+import com.mattmx.reconnect.ReconnectCommand;
 import com.mattmx.reconnect.ReconnectVelocity;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
@@ -18,6 +19,7 @@ public class LuckPermsStorage extends StorageMethod {
             ReconnectVelocity.get().getLogger().warn("LuckPerms is not installed!");
             exception.printStackTrace();
         }
+        ReconnectVelocity.get().getLogger().info("LuckPerms found!");
     }
 
     @Override
@@ -55,6 +57,6 @@ public class LuckPermsStorage extends StorageMethod {
 
     @Override
     public String getMethod() {
-        return null;
+        return "luckperms";
     }
 }

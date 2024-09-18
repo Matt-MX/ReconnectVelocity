@@ -59,11 +59,11 @@ public class ReconnectVelocity {
         StorageManager.registerStorageMethod(new MariaDbStorage());
         StorageManager.registerStorageMethod(new SQLiteStorage());
         StorageManager.registerStorageMethod(new YamlStorage());
-        StorageManager.registerStorageMethod(new LuckPermsStorage());
+        if (proxy.getPluginManager().isLoaded("luckperms")) {
+            StorageManager.registerStorageMethod(new LuckPermsStorage());
+        }
 
         ReconnectCommand.register(this);
-
-        loadStorage();
 
         checker = new UpdateChecker();
 
@@ -82,9 +82,13 @@ public class ReconnectVelocity {
         Objects.requireNonNull(method, "That storage method is invalid!");
 
         // Shutdown current manager
-        getStorageManager().end();
+        if (storage != null) {
+            storage.end();
+        }
 
         storage = StorageManager.createStorageManager(method);
+
+        getLogger().info("Using {} as storage method!", storage.getStorageMethod().getId());
     }
 
     @SuppressWarnings({"ResultOfMethodCallIgnored"})
@@ -114,6 +118,8 @@ public class ReconnectVelocity {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
+        loadStorage();
+
         getProxy().getEventManager().register(this, new ReconnectListener(this));
     }
 
