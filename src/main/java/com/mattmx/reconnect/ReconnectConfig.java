@@ -68,11 +68,11 @@ public class ReconnectConfig {
             Advanced connection pool settings. Most users will not need to change these.
             https://github.com/brettwooldridge/HikariCP/blob/dev/README.md#gear-configuration-knobs-baby
             """)
-        public AdvancedConnectionOptions connectionOptions = new AdvancedConnectionOptions();
+        public AdvancedConnectionParams connectionParameters = new AdvancedConnectionParams();
     }
 
     @ConfigSerializable
-    public static class AdvancedConnectionOptions {
+    public static class AdvancedConnectionParams {
         public boolean useJdbcString = false;
         public String jdbcString = "jdbc:mysql://localhost:3306/db";
         public long connectionTimeout = 30000;

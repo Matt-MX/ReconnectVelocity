@@ -19,19 +19,19 @@ public class MariaDbStorage extends StorageMethod {
 
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(org.mariadb.jdbc.Driver.class.getName());
-        if (config.storage.data.connectionOptions.useJdbcString) {
-            hikariConfig.setJdbcUrl(config.storage.data.connectionOptions.jdbcString);
+        if (config.storage.data.connectionParameters.useJdbcString) {
+            hikariConfig.setJdbcUrl(config.storage.data.connectionParameters.jdbcString);
         } else {
             hikariConfig.setJdbcUrl("jdbc:mariadb://" + config.storage.data.address + "/" + config.storage.data.database);
         }
         hikariConfig.setUsername(config.storage.data.username);
         hikariConfig.setPassword(config.storage.data.password);
-        hikariConfig.setConnectionTimeout(config.storage.data.connectionOptions.connectionTimeout);
-        hikariConfig.setIdleTimeout(config.storage.data.connectionOptions.idleTimeout);
-        hikariConfig.setKeepaliveTime(config.storage.data.connectionOptions.keepAliveTime);
-        hikariConfig.setMaxLifetime(config.storage.data.connectionOptions.maxLifetime);
-        hikariConfig.setMinimumIdle(config.storage.data.connectionOptions.minimumIdle);
-        hikariConfig.setMaximumPoolSize(config.storage.data.connectionOptions.maximumPoolSize);
+        hikariConfig.setConnectionTimeout(config.storage.data.connectionParameters.connectionTimeout);
+        hikariConfig.setIdleTimeout(config.storage.data.connectionParameters.idleTimeout);
+        hikariConfig.setKeepaliveTime(config.storage.data.connectionParameters.keepAliveTime);
+        hikariConfig.setMaxLifetime(config.storage.data.connectionParameters.maxLifetime);
+        hikariConfig.setMinimumIdle(config.storage.data.connectionParameters.minimumIdle);
+        hikariConfig.setMaximumPoolSize(config.storage.data.connectionParameters.maximumPoolSize);
         hikariConfig.setPoolName("reconnect");
 
         ds = new HikariDataSource(hikariConfig);
