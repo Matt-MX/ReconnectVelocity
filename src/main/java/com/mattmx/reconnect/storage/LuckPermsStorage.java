@@ -7,6 +7,9 @@ import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class LuckPermsStorage extends StorageMethod {
     private static final @NotNull String NODE_NAME = "velocity.reconnect";
@@ -23,12 +26,21 @@ public class LuckPermsStorage extends StorageMethod {
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     public void setLastServer(String uuid, String servername) {
+        ReconnectVelocity.get().getLogger().warn("Call to depreciated API");
+	    setLastServer(UUID.fromString(uuid), servername);
+    }
+    @Override
+    public void setLastServer(@NotNull UUID uuid, String servername) {
         User user = LuckPermsProvider.get()
             .getUserManager()
             .getUser(uuid);
 
-        if (user == null) return;
+        if (user == null) {
+		ReconnectVelocity.get().getLogger().error("Unable to retireve user object for {}", uuid);
+		return;
+	}
 
         MetaNode node = MetaNode.builder(NODE_NAME, servername)
             .build();
@@ -42,8 +54,13 @@ public class LuckPermsStorage extends StorageMethod {
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     public String getLastServer(String uuid) {
-
+        ReconnectVelocity.get().getLogger().warn("Call to depreciated API");
+	    return getLastServer(UUID.fromString(uuid));
+    }
+    @Override
+    public @Nullable String getLastServer(@NotNull UUID uuid) {
         User user = LuckPermsProvider.get()
             .getUserManager()
             .getUser(uuid);
@@ -56,6 +73,7 @@ public class LuckPermsStorage extends StorageMethod {
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     public String getMethod() {
         return "luckperms";
     }
