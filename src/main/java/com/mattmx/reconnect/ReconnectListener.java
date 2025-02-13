@@ -61,6 +61,10 @@ public class ReconnectListener {
             server.ping().get();
         } catch (Exception failure) {
 
+            if (plugin.getConfig().debug) {
+                failure.printStackTrace();
+            }
+
             if (plugin.getConfig().notAvailable) {
                 plugin.getProxy()
                     .getScheduler()
