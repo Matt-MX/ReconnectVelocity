@@ -8,6 +8,9 @@ import java.util.List;
 @ConfigSerializable
 public class ReconnectConfig {
 
+    @Comment("For debugging purposes, recommended to disable.")
+    boolean debug = false;
+
     @Comment("Should we check for the latest version?")
     boolean checkUpdates = true;
 
