@@ -39,6 +39,9 @@ tasks {
     }
     shadowJar {
         mergeServiceFiles()
+        // Avoid SnakeYAML classpath conflicts with Velocity's bundled version.
+        relocate("org.simpleyaml", "com.mattmx.reconnect.shadow.simpleyaml")
+        relocate("org.yaml.snakeyaml", "com.mattmx.reconnect.shadow.snakeyaml")
     }
     runVelocity {
         velocityVersion(libs.versions.velocity.get())
